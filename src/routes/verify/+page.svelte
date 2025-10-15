@@ -1,5 +1,6 @@
 <script lang="ts">
 	import VerificationForm from '$lib/components/VerificationForm.svelte';
+	import DocumentUpload from '$lib/components/DocumentUpload.svelte';
 </script>
 
 <svelte:head>
@@ -19,6 +20,7 @@
 	<div class="verification-container">
 		<div class="verification-main">
 			<VerificationForm />
+			<DocumentUpload />
 		</div>
 		
 		<div class="verification-sidebar">

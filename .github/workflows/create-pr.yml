@@ -1,0 +1,39 @@
+name: Create Pull Request
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: 'Branch name for the PR'
+        required: true
+        default: 'feature/new-feature'
+      pr_title:
+        description: 'Pull Request title'
+        required: true
+        default: 'New Feature'
+      pr_body:
+        description: 'Pull Request description'
+        required: false
+        default: 'This PR adds a new feature'
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.event.inputs.branch_name }}
+          title: ${{ github.event.inputs.pr_title }}
+          body: ${{ github.event.inputs.pr_body }}
+          labels: |
+            enhancement
+            automated
+          assignees: ${{ github.actor }}
+          reviewers: ${{ github.actor }}
+

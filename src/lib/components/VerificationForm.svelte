@@ -42,8 +42,8 @@
 
 <div class="verification-form">
 	<div class="form-group">
-		<label class="form-label">Verification Type</label>
-		<select bind:value={verificationType} class="form-select" onchange={resetForm}>
+		<label for="verification-type" class="form-label">Verification Type</label>
+		<select id="verification-type" bind:value={verificationType} class="form-select" onchange={resetForm}>
 			{#each verificationTypes as type}
 				<option value={type.value}>{type.label}</option>
 			{/each}
@@ -51,11 +51,12 @@
 	</div>
 
 	<div class="form-group">
-		<label class="form-label">
+		<label for="verification-input" class="form-label">
 			{verificationTypes.find(t => t.value === verificationType)?.label}
 		</label>
 		<div class="input-group">
 			<input
+				id="verification-input"
 				type="text"
 				bind:value={inputValue}
 				placeholder={verificationTypes.find(t => t.value === verificationType)?.placeholder}
