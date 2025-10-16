@@ -1,0 +1,30 @@
+# Bun configuration file
+
+[install]
+# Use exact versions
+exact = true
+
+# Auto-install peer dependencies
+auto = true
+
+# Use global cache
+cache = true
+
+# Registry
+registry = "https://registry.npmjs.org/"
+
+[install.scopes]
+# Add any scoped registries here if needed
+
+[run]
+# Enable bun shell
+shell = "bun"
+
+# Set NODE_ENV
+NODE_ENV = "development"
+
+[test]
+# Test configuration
+preload = ["./tests/setup.ts"]
+coverage = true
+

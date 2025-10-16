@@ -1,0 +1,83 @@
+// Prisma schema for CheckMe
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(uuid())
+  email         String          @unique
+  passwordHash  String
+  name          String?
+  company       String?
+  plan          String          @default("free")
+  apiKey        String?         @unique
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  
+  verifications Verification[]
+  apiKeys       ApiKey[]
+  usage         Usage[]
+
+  @@index([email])
+}
+
+model Verification {
+  id          String     @id @default(uuid())
+  userId      String?
+  user        User?      @relation(fields: [userId], references: [id])
+  type        String
+  inputData   Json
+  result      Json?
+  riskScore   Int?
+  status      String     @default("pending")
+  createdAt   DateTime   @default(now())
+  completedAt DateTime?
+  
+  documents   Document[]
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model Document {
+  id             String       @id @default(uuid())
+  verificationId String
+  verification   Verification @relation(fields: [verificationId], references: [id], onDelete: Cascade)
+  fileUrl        String
+  fileType       String
+  ocrData        Json?
+  createdAt      DateTime     @default(now())
+
+  @@index([verificationId])
+}
+
+model ApiKey {
+  id         String    @id @default(uuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  keyHash    String    @unique
+  name       String?
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model Usage {
+  id                String   @id @default(uuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  verificationCount Int      @default(0)
+  periodStart       DateTime
+  periodEnd         DateTime
+  createdAt         DateTime @default(now())
+
+  @@index([userId])
+}
+

@@ -1,0 +1,33 @@
+{
+  "name": "checkme-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "test": "playwright test",
+    "test:unit": "vitest"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.2",
+    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/kit": "^2.8.5",
+    "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "@tailwindcss/vite": "^4.1.13",
+    "svelte": "^5.16.0",
+    "svelte-check": "^4.0.0",
+    "tailwindcss": "^4.1.13",
+    "tslib": "^2.4.1",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7",
+    "vitest": "^2.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "gsap": "^3.12.5"
+  }
+}
+

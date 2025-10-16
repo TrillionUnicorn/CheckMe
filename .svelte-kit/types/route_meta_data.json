@@ -1,0 +1,11 @@
+{
+	"/(mvp1-enterprise)": [],
+	"/": [],
+	"/contact": [],
+	"/health": [
+		"src/routes/health/+server.ts"
+	],
+	"/pitch": [],
+	"/reports": [],
+	"/verify": []
+}

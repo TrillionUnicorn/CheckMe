@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  checkme-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: checkme-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    networks:
+      - checkme-network
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    container_name: checkme-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    networks:
+      - checkme-network
+
+  # Traefik reverse proxy
+  traefik:
+    image: traefik:v2.10
+    container_name: checkme-traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    networks:
+      - checkme-network
+
+networks:
+  checkme-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+
