@@ -43,7 +43,7 @@ test.describe('Verify Page', () => {
 
 	test('should handle file upload', async ({ page }) => {
 		// Create a test file
-		const buffer = new TextEncoder().encode('test file content');
+		const buffer = Buffer.from('test file content');
 		
 		// Set up file chooser handler
 		const fileChooserPromise = page.waitForEvent('filechooser');
@@ -206,4 +206,3 @@ test.describe('Verify Page', () => {
 		expect(loadTime).toBeLessThan(5000);
 	});
 });
-
